@@ -8,7 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\Table(name: '`events`')]
 class Event
-{
+{   
+    public function __construct()
+    {
+        $this->updatedTimestamps();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -52,14 +57,14 @@ class Event
         return $this;
     }
 
-    public function getDateStart(): ?\DateTimeInterface
+    public function getStartDate(): ?\DateTimeInterface
     {
-        return $this->date_start;
+        return $this->start_date;
     }
 
-    public function setDateStart(\DateTimeInterface $date_start): self
+    public function setStartDate(\DateTimeInterface $start_date): self
     {
-        $this->date_start = $date_start;
+        $this->start_date = $start_date;
 
         return $this;
     }
@@ -100,27 +105,40 @@ class Event
         return $this;
     }
 
-    public function getCreatedAt() :?DateTime
+    public function getCreatedAt() :?\DateTime
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
     
-    public function setCreatedAt(DateTime $createdAt): self
+    public function setCreatedAt(\DateTime $created_at): self
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt() :?DateTime
+    public function getUpdatedAt() :?\DateTime
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
     
-    public function setUpdatedAt(DateTime $updatedAt): self
+    public function setUpdatedAt(\DateTime $updated_at): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updated_at;
 
         return $this;
+    }
+
+    /**
+    * @ORM\PrePersist
+    * @ORM\PreUpdate
+    */
+    public function updatedTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTime('now'));    
+        
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt(new \DateTime('now'));
+        }
     }
 }
