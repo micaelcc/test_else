@@ -3,17 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\SpeakerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpeakerRepository::class)]
 #[ORM\Table(name: '`speakers`')]
 class Speaker
 {
-    public function __construct()
-    {
-        $this->updatedTimestamps();
-    }
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -30,6 +27,15 @@ class Speaker
 
     #[ORM\Column(type: 'string', length: 255)]
     private $email;
+
+    #[ORM\OneToMany(mappedBy: 'speaker', targetEntity: Talk::class)]
+    private $talks;
+
+    public function __construct()
+    {
+        $this->updatedTimestamps();
+        $this->talks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,5 +112,34 @@ class Speaker
             'name' => $this->getName(),
             'email' => $this->getEmail(),
         ];
+    }
+    /**
+     * @return Collection<int, Talk>
+     */
+    public function getTalks(): Collection
+    {
+        return $this->talks;
+    }
+
+    public function addTalk(Talk $talk): self
+    {
+        if (!$this->talks->contains($talk)) {
+            $this->talks[] = $talk;
+            $talk->setSpeakerId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTalk(Talk $talk): self
+    {
+        if ($this->talks->removeElement($talk)) {
+            // set the owning side to null (unless already changed)
+            if ($talk->getSpeakerId() === $this) {
+                $talk->setSpeakerId(null);
+            }
+        }
+
+        return $this;
     }
 }

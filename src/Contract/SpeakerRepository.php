@@ -6,6 +6,7 @@ use App\Entity\Speaker;
 
 interface SpeakerRepository
 {
-  public function findByEmail(string $email): Speaker | null;
-  public function save(Speaker $speaker): void;
+    public function findByEmail(string $email): Speaker | null;
+    public function save(Speaker $speaker): void;
+    public function findById(int $id): Speaker | null;
 }

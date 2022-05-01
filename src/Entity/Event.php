@@ -3,17 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\Table(name: '`events`')]
 class Event
 {
-    public function __construct()
-    {
-        $this->updatedTimestamps();
-    }
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -39,6 +36,15 @@ class Event
 
     #[ORM\Column(type: 'string', length: 255)]
     private $status;
+
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Talk::class)]
+    private $talks;
+
+    public function __construct()
+    {
+        $this->updatedTimestamps();
+        $this->talks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -151,5 +157,35 @@ class Event
             'end_date' => $this->getEndDate(),
             'title' => $this->getTitle(),
         ];
+    }
+
+    /**
+     * @return Collection<int, Talk>
+     */
+    public function getTalks(): Collection
+    {
+        return $this->talks;
+    }
+
+    public function addTalk(Talk $talk): self
+    {
+        if (!$this->talks->contains($talk)) {
+            $this->talks[] = $talk;
+            $talk->setEventId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTalk(Talk $talk): self
+    {
+        if ($this->talks->removeElement($talk)) {
+            // set the owning side to null (unless already changed)
+            if ($talk->getEventId() === $this) {
+                $talk->setEventId(null);
+            }
+        }
+
+        return $this;
     }
 }

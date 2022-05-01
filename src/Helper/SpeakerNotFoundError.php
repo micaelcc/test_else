@@ -2,11 +2,11 @@
 
 namespace App\Helper;
 
-class SpeakerAlreadyExistsError extends \Exception
+class SpeakerNotFoundError extends \Exception
 {
     public function __construct()
     {
-        parent::__construct('speaker already exists', 409, null);
+        parent::__construct('speaker not found', 404, null);
     }
 
     public function __toString()
