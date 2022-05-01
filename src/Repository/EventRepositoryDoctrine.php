@@ -37,4 +37,10 @@ class EventRepositoryDoctrine extends ServiceEntityRepository implements EventRe
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function delete(Event $event): void
+    {
+        $this->getEntityManager()->remove($event);
+        $this->getEntityManager()->flush();
+    }
 }
