@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repository\EventRepository;
+use App\Contract\EventRepository;
 use App\Dtos\CreateEventDTO;
 use App\Entity\Event;
 use App\Helper\EventAlreadyExistsError;
