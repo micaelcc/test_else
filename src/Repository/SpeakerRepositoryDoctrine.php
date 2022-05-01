@@ -13,4 +13,19 @@ class SpeakerRepositoryDoctrine extends ServiceEntityRepository implements Speak
     {
         parent::__construct($registry, Speaker::class);
     }
+
+    public function findByEmail(string $email): Speaker | null
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function save(Speaker $speaker): void
+    {
+        $this->getEntityManager()->persist($speaker);
+        $this->getEntityManager()->flush();
+    }
 }
