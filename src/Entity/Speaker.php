@@ -96,4 +96,15 @@ class Speaker
             $this->setCreatedAt(new \DateTime('now'));
         }
     }
+
+    public function toJson()
+    {
+        return [
+            'id' => $this->getId(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+        ];
+    }
 }
