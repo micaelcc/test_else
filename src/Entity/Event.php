@@ -37,7 +37,7 @@ class Event
     #[ORM\Column(type: 'string', length: 255)]
     private $status;
 
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Talk::class)]
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Talk::class, cascade:["persist", "remove"])]
     private $talks;
 
     public function __construct()

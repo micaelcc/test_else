@@ -42,7 +42,7 @@ class Talk
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Speaker::class, inversedBy: 'talks')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
     private $speaker;
 
     public function __construct()

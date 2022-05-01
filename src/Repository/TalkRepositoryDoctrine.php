@@ -28,4 +28,10 @@ class TalkRepositoryDoctrine extends ServiceEntityRepository implements TalkRepo
                 ->getQuery()
                 ->getOneOrNullResult();
     }
+
+    public function delete(Talk $talk): void
+    {
+        $this->getEntityManager()->remove($talk);
+        $this->getEntityManager()->flush();
+    }
 }
