@@ -8,21 +8,21 @@ use App\Helper\EventNotFoundError;
 
 class ShowEventService
 {
-  private EventRepository $eventRepository;
+    private EventRepository $eventRepository;
 
-  public function __construct(EventRepository $eventRepository)
-  {
-    $this->eventRepository = $eventRepository;
-  }
-
-  public function execute(int $id): Event
-  {
-    $event = $this->eventRepository->findById($id);
-
-    if ($event === null) {
-      throw new EventNotFoundError();
+    public function __construct(EventRepository $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
     }
 
-    return $event;
-  }
+    public function execute(int $id): Event
+    {
+        $event = $this->eventRepository->findById($id);
+
+        if ($event === null) {
+            throw new EventNotFoundError();
+        }
+
+        return $event;
+    }
 }

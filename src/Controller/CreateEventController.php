@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Dtos\CreateEventDTO;
 
-
 class CreateEventController
 {
     private CreateEventService $createEventService;

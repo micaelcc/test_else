@@ -11,33 +11,32 @@ use App\Services\UpdateEventService;
 
 class UpdateEventController
 {
-  private UpdateEventService $updateEventService;
+    private UpdateEventService $updateEventService;
 
-  public function __construct(UpdateEventService $updateEventService)
-  {
-    $this->updateEventService = $updateEventService;
-  }
+    public function __construct(UpdateEventService $updateEventService)
+    {
+        $this->updateEventService = $updateEventService;
+    }
 
   /**
    * @Route("/events/{id}", methods={"PATCH"})
    */
-  public function handle(int $id, Request $request): Response
-  {
-    try {
-      $jsonData = json_decode($request->getContent(), true);
+    public function handle(int $id, Request $request): Response
+    {
+        try {
+            $jsonData = json_decode($request->getContent(), true);
 
-      $converted = new UpdateEventDTO($jsonData);
+            $converted = new UpdateEventDTO($jsonData);
 
-      $response = $this->updateEventService->execute($converted, $id);
+            $response = $this->updateEventService->execute($converted, $id);
 
-      return (new JsonResponse())
-        ->setStatusCode(200)
-        ->setData($response->toJson());
-        
-    } catch (\Exception $error) {
-      return (new JsonResponse())
-        ->setStatusCode($error->getCode())
-        ->setData($error->__toString());
+            return (new JsonResponse())
+            ->setStatusCode(200)
+            ->setData($response->toJson());
+        } catch (\Exception $error) {
+            return (new JsonResponse())
+            ->setStatusCode($error->getCode())
+            ->setData($error->__toString());
+        }
     }
-  }
 }

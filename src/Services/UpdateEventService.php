@@ -10,46 +10,46 @@ use App\Helper\EventTitleAlreadyInUseError;
 
 class UpdateEventService
 {
-  private EventRepository $eventRepository;
+    private EventRepository $eventRepository;
 
-  public function __construct(EventRepository $eventRepository)
-  {
-    $this->eventRepository = $eventRepository;
-  }
-
-  public function execute(UpdateEventDTO $data, int $id): Event
-  {
-    $event = $this->eventRepository->findById($id);
-
-    if ($event === null) {
-      throw new EventNotFoundError();
+    public function __construct(EventRepository $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
     }
 
-    if ($data->title !== null) {
-      $eventExists = $this->eventRepository->findByTitle($data->title);
+    public function execute(UpdateEventDTO $data, int $id): Event
+    {
+        $event = $this->eventRepository->findById($id);
 
-      if ($eventExists !== null && $eventExists->getId() !== $id) {
-        throw new EventTitleAlreadyInUseError();
-      }
+        if ($event === null) {
+            throw new EventNotFoundError();
+        }
 
-      $event->setTitle($data->title);
+        if ($data->title !== null) {
+            $eventExists = $this->eventRepository->findByTitle($data->title);
+
+            if ($eventExists !== null && $eventExists->getId() !== $id) {
+                throw new EventTitleAlreadyInUseError();
+            }
+
+            $event->setTitle($data->title);
+        }
+
+        if ($data->description !== null) {
+            $event->setDescription($data->description);
+        }
+
+        if ($data->start_date !== null) {
+            $event->setStartDate(new \DateTime($data->start_date));
+        }
+
+        if ($data->end_date !== null) {
+            $event->setEndDate(new \DateTime($data->end_date));
+        }
+
+        $event->updatedTimestamps();
+        $this->eventRepository->save($event);
+
+        return $event;
     }
-
-    if ($data->description !== null) {
-      $event->setDescription($data->description);
-    }
-
-    if ($data->start_date !== null) {
-      $event->setStartDate(new \DateTime($data->start_date));
-    }
-
-    if ($data->end_date !== null) {
-      $event->setEndDate(new \DateTime($data->end_date));
-    }
-
-    $event->updatedTimestamps();
-    $this->eventRepository->save($event);
-
-    return $event;
-  }
 }

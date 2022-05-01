@@ -143,7 +143,7 @@ class Event
     }
 
     public function toJson()
-    {   
+    {
         return [
             'id' => $this->getId(),
             'description' => $this->getDescription(),

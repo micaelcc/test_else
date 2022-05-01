@@ -10,29 +10,28 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ShowEventController
 {
-  private ShowEventService $showEventService;
+    private ShowEventService $showEventService;
 
-  public function __construct(ShowEventService $showEventService)
-  {
-    $this->showEventService = $showEventService;
-  }
+    public function __construct(ShowEventService $showEventService)
+    {
+        $this->showEventService = $showEventService;
+    }
 
   /**
    * @Route("/events/{id}", methods={"GET"})
    */
-  public function handle(int $id, Request $request): Response
-  {
-    try {
-      $response = $this->showEventService->execute($id);
+    public function handle(int $id, Request $request): Response
+    {
+        try {
+            $response = $this->showEventService->execute($id);
 
-      return (new JsonResponse())
-        ->setStatusCode(200)
-        ->setData($response->toJson());
-
-    } catch (\Exception $error) {
-      return (new JsonResponse())
-        ->setStatusCode($error->getCode())
-        ->setData($error->__toString());
+            return (new JsonResponse())
+            ->setStatusCode(200)
+            ->setData($response->toJson());
+        } catch (\Exception $error) {
+            return (new JsonResponse())
+            ->setStatusCode($error->getCode())
+            ->setData($error->__toString());
+        }
     }
-  }
 }
