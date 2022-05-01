@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TalkRepository::class)]
+#[ORM\Table(name: '`talks`')]
 class Talk
 {
     #[ORM\Id]
@@ -29,23 +30,23 @@ class Talk
 
     #[ORM\ManyToOne(targetEntity: Event::class, inversedBy: 'talks')]
     #[ORM\JoinColumn(nullable: false)]
-    private $event_id;
+    private $event;
 
-    #[ORM\Column(type: 'time')]
+    #[ORM\Column(type: 'string')]
     private $start_time;
 
-    #[ORM\Column(type: 'time')]
+    #[ORM\Column(type: 'string')]
     private $end_time;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $description;
 
-    #[ORM\ManyToMany(targetEntity: Speaker::class, inversedBy: 'talks')]
-    private $speaker_id;
+    #[ORM\ManyToOne(targetEntity: Speaker::class, inversedBy: 'talks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $speaker;
 
     public function __construct()
     {
-        $this->speaker_id = new ArrayCollection();
         $this->updatedTimestamps();
     }
 
@@ -78,36 +79,36 @@ class Talk
         return $this;
     }
 
-    public function getEventId(): ?Event
+    public function getEvent(): ?Event
     {
         return $this->event_id;
     }
 
-    public function setEventId(?Event $event_id): self
+    public function setEvent(?Event $event): self
     {
-        $this->event_id = $event_id;
+        $this->event = $event;
 
         return $this;
     }
 
-    public function getStartTime(): ?\DateTimeInterface
+    public function getStartTime(): ?string
     {
         return $this->start_time;
     }
 
-    public function setStartTime(\DateTimeInterface $start_time): self
+    public function setStartTime(string $start_time): self
     {
         $this->start_time = $start_time;
 
         return $this;
     }
 
-    public function getEndTime(): ?\DateTimeInterface
+    public function getEndTime(): ?string
     {
         return $this->end_time;
     }
 
-    public function setEndTime(\DateTimeInterface $end_time): self
+    public function setEndTime(string $end_time): self
     {
         $this->end_time = $end_time;
 
@@ -122,30 +123,6 @@ class Talk
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Speaker>
-     */
-    public function getSpeakerId(): Collection
-    {
-        return $this->speaker_id;
-    }
-
-    public function addSpeakerId(Speaker $speakerId): self
-    {
-        if (!$this->speaker_id->contains($speakerId)) {
-            $this->speaker_id[] = $speakerId;
-        }
-
-        return $this;
-    }
-
-    public function removeSpeakerId(Speaker $speakerId): self
-    {
-        $this->speaker_id->removeElement($speakerId);
 
         return $this;
     }
@@ -183,6 +160,18 @@ class Talk
     public function setUpdatedAt(\DateTime $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getSpeaker(): ?Speaker
+    {
+        return $this->speaker;
+    }
+
+    public function setSpeaker(?Speaker $speaker): self
+    {
+        $this->speaker = $speaker;
 
         return $this;
     }

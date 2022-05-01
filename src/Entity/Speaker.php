@@ -28,7 +28,7 @@ class Speaker
     #[ORM\Column(type: 'string', length: 255)]
     private $email;
 
-    #[ORM\ManyToMany(targetEntity: Talk::class, mappedBy: 'speaker_id')]
+    #[ORM\OneToMany(mappedBy: 'speaker', targetEntity: Talk::class)]
     private $talks;
 
     public function __construct()
@@ -113,7 +113,6 @@ class Speaker
             'email' => $this->getEmail(),
         ];
     }
-
     /**
      * @return Collection<int, Talk>
      */
@@ -126,7 +125,7 @@ class Speaker
     {
         if (!$this->talks->contains($talk)) {
             $this->talks[] = $talk;
-            $talk->addSpeakerId($this);
+            $talk->setSpeakerId($this);
         }
 
         return $this;
@@ -135,7 +134,10 @@ class Speaker
     public function removeTalk(Talk $talk): self
     {
         if ($this->talks->removeElement($talk)) {
-            $talk->removeSpeakerId($this);
+            // set the owning side to null (unless already changed)
+            if ($talk->getSpeakerId() === $this) {
+                $talk->setSpeakerId(null);
+            }
         }
 
         return $this;
