@@ -29,13 +29,13 @@ class UpdateTalkService
         }
 
         if ($data->speaker_id !== null) {
-          $speaker = $this->speakerRepository->findById($data->speaker_id);
+            $speaker = $this->speakerRepository->findById($data->speaker_id);
 
-          if ($speaker === null) {
-            throw new SpeakerNotFoundError();
-          }
+            if ($speaker === null) {
+                throw new SpeakerNotFoundError();
+            }
 
-          $talk->setSpeaker($speaker);
+            $talk->setSpeaker($speaker);
         }
 
         if ($data->description !== null) {
@@ -43,7 +43,7 @@ class UpdateTalkService
         }
 
         if ($data->title !== null) {
-          $talk->setTitle($data->title);
+            $talk->setTitle($data->title);
         }
 
         if ($data->start_time !== null) {
@@ -55,7 +55,7 @@ class UpdateTalkService
         }
 
         if ($data->date !== null) {
-          $talk->setDate(new \DateTime($data->date));
+            $talk->setDate(new \DateTime($data->date));
         }
 
         $talk->updatedTimestamps();
