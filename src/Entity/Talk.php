@@ -175,4 +175,24 @@ class Talk
 
         return $this;
     }
+
+    public function toJson()
+    {
+        return [
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'start_time' => $this->getStartTime(),
+            'end_time' =>  $this->getEndTime(),
+            'date' => $this->getDate()->format('d-m-Y'),
+            'speaker' => [
+                'name' => $this->speaker->getName(),
+                'email' => $this->speaker->getEmail()
+            ],
+            'event' => [
+                'title' => $this->event->getTitle(),
+                'description' => $this->event->getDescription()
+            ]
+        ];
+    }
 }
