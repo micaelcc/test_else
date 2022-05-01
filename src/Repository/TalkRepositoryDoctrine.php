@@ -19,4 +19,13 @@ class TalkRepositoryDoctrine extends ServiceEntityRepository implements TalkRepo
         $this->getEntityManager()->persist($talk);
         $this->getEntityManager()->flush();
     }
+
+    public function findById(int $id): Talk | null
+    {
+            return $this->createQueryBuilder('e')
+                ->andWhere('e.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
 }
