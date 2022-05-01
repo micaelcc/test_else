@@ -28,4 +28,13 @@ class SpeakerRepositoryDoctrine extends ServiceEntityRepository implements Speak
         $this->getEntityManager()->persist($speaker);
         $this->getEntityManager()->flush();
     }
+
+    public function findById(int $id): Speaker | null
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
