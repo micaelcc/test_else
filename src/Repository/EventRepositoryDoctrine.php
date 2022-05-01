@@ -28,4 +28,13 @@ class EventRepositoryDoctrine extends ServiceEntityRepository implements EventRe
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findById(int $id): Event | null
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
