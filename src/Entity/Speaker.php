@@ -36,7 +36,7 @@ class Speaker
         $this->updatedTimestamps();
         $this->talks = new ArrayCollection();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
