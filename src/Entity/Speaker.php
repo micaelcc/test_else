@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
+use App\Repository\SpeakerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EventRepository::class)]
-#[ORM\Table(name: '`events`')]
-class Event
+#[ORM\Entity(repositoryClass: SpeakerRepository::class)]
+#[ORM\Table(name: '`speakers`')]
+class Speaker
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,21 +23,12 @@ class Event
     private $updated_at;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $title;
-
-    #[ORM\Column(type: 'datetime')]
-    private $start_date;
-
-    #[ORM\Column(type: 'datetime')]
-    private $end_date;
+    private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $description;
+    private $email;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $status;
-
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Talk::class, cascade:["persist", "remove"])]
+    #[ORM\OneToMany(mappedBy: 'speaker', targetEntity: Talk::class)]
     private $talks;
 
     public function __construct()
@@ -51,62 +42,26 @@ class Event
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getEmail(): ?string
     {
-        return $this->start_date;
+        return $this->email;
     }
 
-    public function setStartDate(\DateTimeInterface $start_date): self
+    public function setEmail(string $email): self
     {
-        $this->start_date = $start_date;
-
-        return $this;
-    }
-
-    public function getEndDate(): ?\DateTimeInterface
-    {
-        return $this->end_date;
-    }
-
-    public function setEndDate(\DateTimeInterface $end_date): self
-    {
-        $this->end_date = $end_date;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
+        $this->email = $email;
 
         return $this;
     }
@@ -152,13 +107,12 @@ class Event
     {
         return [
             'id' => $this->getId(),
-            'description' => $this->getDescription(),
-            'start_date' => $this->getStartDate(),
-            'end_date' => $this->getEndDate(),
-            'title' => $this->getTitle(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
         ];
     }
-
     /**
      * @return Collection<int, Talk>
      */
@@ -171,7 +125,7 @@ class Event
     {
         if (!$this->talks->contains($talk)) {
             $this->talks[] = $talk;
-            $talk->setEventId($this);
+            $talk->setSpeakerId($this);
         }
 
         return $this;
@@ -181,8 +135,8 @@ class Event
     {
         if ($this->talks->removeElement($talk)) {
             // set the owning side to null (unless already changed)
-            if ($talk->getEventId() === $this) {
-                $talk->setEventId(null);
+            if ($talk->getSpeakerId() === $this) {
+                $talk->setSpeakerId(null);
             }
         }
 
