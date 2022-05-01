@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\Table(name: '`events`')]
 class Event
-{   
+{
     public function __construct()
     {
         $this->updatedTimestamps();
@@ -105,11 +105,11 @@ class Event
         return $this;
     }
 
-    public function getCreatedAt() :?\DateTime
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->created_at;
     }
-    
+
     public function setCreatedAt(\DateTime $created_at): self
     {
         $this->created_at = $created_at;
@@ -117,11 +117,11 @@ class Event
         return $this;
     }
 
-    public function getUpdatedAt() :?\DateTime
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updated_at;
     }
-    
+
     public function setUpdatedAt(\DateTime $updated_at): self
     {
         $this->updated_at = $updated_at;
@@ -135,10 +135,21 @@ class Event
     */
     public function updatedTimestamps(): void
     {
-        $this->setUpdatedAt(new \DateTime('now'));    
-        
+        $this->setUpdatedAt(new \DateTime('now'));
+
         if ($this->getCreatedAt() === null) {
             $this->setCreatedAt(new \DateTime('now'));
         }
+    }
+
+    public function toJson()
+    {   
+        return [
+            'id' => $this->getId(),
+            'description' => $this->getDescription(),
+            'start_date' => $this->getStartDate(),
+            'end_date' => $this->getEndDate(),
+            'title' => $this->getTitle(),
+        ];
     }
 }
