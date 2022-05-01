@@ -5,8 +5,9 @@ namespace App\Repository;
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Contract\EventRepository;
 
-class EventRepository extends ServiceEntityRepository
+class EventRepositoryDoctrine extends ServiceEntityRepository implements EventRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
