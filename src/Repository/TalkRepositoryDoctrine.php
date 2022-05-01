@@ -13,4 +13,10 @@ class TalkRepositoryDoctrine extends ServiceEntityRepository implements TalkRepo
     {
         parent::__construct($registry, Talk::class);
     }
+
+    public function save(Talk $talk): void
+    {
+        $this->getEntityManager()->persist($talk);
+        $this->getEntityManager()->flush();
+    }
 }
