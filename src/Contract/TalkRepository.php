@@ -10,4 +10,5 @@ interface TalkRepository
     public function findById(int $id): Talk | null;
     public function delete(Talk $talk): void;
     public function findByEvent(int $id);
+    public function findBySpeaker(int $id);
 }
