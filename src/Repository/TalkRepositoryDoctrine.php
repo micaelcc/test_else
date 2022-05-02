@@ -22,16 +22,34 @@ class TalkRepositoryDoctrine extends ServiceEntityRepository implements TalkRepo
 
     public function findById(int $id): Talk | null
     {
-            return $this->createQueryBuilder('e')
-                ->andWhere('e.id = :id')
-                ->setParameter('id', $id)
-                ->getQuery()
-                ->getOneOrNullResult();
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function delete(Talk $talk): void
     {
         $this->getEntityManager()->remove($talk);
         $this->getEntityManager()->flush();
+    }
+
+    public function findByEvent(int $id)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.event = :event_id')
+            ->setParameter('event_id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findBySpeaker(int $id)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.speaker = :speaker_id')
+            ->setParameter('speaker_id', $id)
+            ->getQuery()
+            ->getResult();
     }
 }
