@@ -43,4 +43,13 @@ class TalkRepositoryDoctrine extends ServiceEntityRepository implements TalkRepo
             ->getQuery()
             ->getResult();
     }
+
+    public function findBySpeaker(int $id)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.speaker = :speaker_id')
+            ->setParameter('speaker_id', $id)
+            ->getQuery()
+            ->getResult();
+    }
 }
