@@ -5,31 +5,31 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\ShowSpeakerService;
+use App\Services\ListTalksByEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ShowSpeakerController
+class ListTalksByEventController
 {
-    private ShowSpeakerService $showSpeakerService;
+    private ListTalksByEventService $listTalksByEventService;
 
-    public function __construct(ShowSpeakerService $showSpeakerService)
+    public function __construct(ListTalksByEventService $listTalksByEventService)
     {
-        $this->showSpeakerService = $showSpeakerService;
+        $this->listTalksByEventService = $listTalksByEventService;
     }
 
   /**
-   * @Route("/speakers/{id}", methods={"GET"})
+   * @Route("/events/{id}/talks", methods={"GET"})
    */
     public function handle(int $id, Request $request): Response
     {
         try {
-            $response = $this->showSpeakerService->execute($id);
+            $response = $this->listTalksByEventService->execute($id);
 
             return (new JsonResponse())
             ->setStatusCode(200)
-            ->setData($response->toJson());
+            ->setData($response);
         } catch (\Exception $error) {
-            var_dump($error->__toString());
+            var_dump($error);
             return (new JsonResponse())
             ->setStatusCode($error->getCode())
             ->setData($error->__toString());
