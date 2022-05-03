@@ -1,33 +1,33 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\DeleteTalkService;
+use App\Services\DeleteEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Helper\HttpResponses;
-use App\Helper\TalkNotFoundError;
+use App\Helper\EventNotFoundError;
 
-class DeleteTalkController
+class DeleteEventController
 {
-    private DeleteTalkService $deleteTalkService;
+    private DeleteEventService $deleteEventService;
 
-    public function __construct(DeleteTalkService $deleteTalkService)
+    public function __construct(DeleteEventService $deleteEventService)
     {
-        $this->deleteTalkService = $deleteTalkService;
+        $this->deleteEventService = $deleteEventService;
     }
 
     /**
-    * Delete talk route.
-    * @Route("/talks/{id}", methods={"DELETE"})
+    * Delete event route.
+    * @Route("/events/{id}", methods={"DELETE"})
     * @OA\Parameter(
     *    name="id",
     *    in="path",
-    *    description="The field used to identify talk",
+    *    description="The field used to identify event",
     * )
     *
     * @OA\Response(
@@ -36,18 +36,18 @@ class DeleteTalkController
     * )
     * @OA\Response(
     *     response=404,
-    *     description="Return 404 if a inexistent talk is provided",
+    *     description="Return 404 if a inexistent event is provided",
     * )
     */
     public function handle(int $id, Request $request): Response
     {
         try {
-            $this->deleteTalkService->execute($id);
+            $this->deleteEventService->execute($id);
 
             return HttpResponses::deleted();
         } catch (\TypeError $error) {
             return HttpResponses::badRequest($error);
-        } catch (TalkNotFoundError $error) {
+        } catch (EventNotFoundError $error) {
             return HttpResponses::notFound($error);
         } catch (\Exception $error) {
             return HttpResponses::serverError($error);

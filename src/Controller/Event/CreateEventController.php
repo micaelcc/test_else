@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\CreateEventService;

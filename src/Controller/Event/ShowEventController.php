@@ -1,55 +1,55 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\ShowSpeakerService;
+use App\Services\ShowEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\Event;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use App\Entity\Speaker;
 use App\Helper\HttpResponses;
-use App\Helper\SpeakerNotFoundError;
+use App\Helper\EventNotFoundError;
 
-class ShowSpeakerController
+class ShowEventController
 {
-    private ShowSpeakerService $showSpeakerService;
+    private ShowEventService $showEventService;
 
-    public function __construct(ShowSpeakerService $showSpeakerService)
+    public function __construct(ShowEventService $showEventService)
     {
-        $this->showSpeakerService = $showSpeakerService;
+        $this->showEventService = $showEventService;
     }
 
     /**
-    * Show speaker route.
-    * @Route("/speakers/{id}", methods={"GET"})
+    * Show event route.
+    * @Route("/events/{id}", methods={"GET"})
     * @OA\Parameter(
     *    name="id",
     *    in="path",
-    *    description="The field used to identify speaker",
+    *    description="The field used to identify event",
     * )
     *
     * @OA\Response(
     *     response=200,
-    *     description="Returns a Speaker on success",
-    *     @Model(type=Speaker::class)
+    *     description="Returns a Event on success",
+    *     @Model(type=Event::class)
     * )
     * @OA\Response(
     *     response=404,
-    *     description="Return 404 if a inexistent speaker is provided",
+    *     description="Return 404 if a inexistent event is provided",
     * )
     */
     public function handle(int $id, Request $request): Response
     {
         try {
-            $response = $this->showSpeakerService->execute($id);
+            $response = $this->showEventService->execute($id);
 
             return HttpResponses::ok($response->toJson());
         } catch (\TypeError $error) {
             return HttpResponses::badRequest($error);
-        } catch (SpeakerNotFoundError $error) {
+        } catch (EventNotFoundError $error) {
             return HttpResponses::notFound($error);
         } catch (\Exception $error) {
             return HttpResponses::serverError($error);

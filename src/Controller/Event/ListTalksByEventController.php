@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\ListTalksBySpeakerService;
+use App\Services\ListTalksByEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Entity\Talk;
 use App\Helper\HttpResponses;
-use App\Helper\SpeakerNotFoundError;
+use App\Helper\EventNotFoundError;
 
-class ListTalksBySpeakerController
+class ListTalksByEventController
 {
-    private ListTalksBySpeakerService $listTalksBySpeakerService;
+    private ListTalksByEventService $listTalksByEventService;
 
-    public function __construct(ListTalksBySpeakerService $listTalksBySpeakerService)
+    public function __construct(ListTalksByEventService $listTalksByEventService)
     {
-        $this->listTalksBySpeakerService = $listTalksBySpeakerService;
+        $this->listTalksByEventService = $listTalksByEventService;
     }
 
     /**
-    * List talks by speaker route.
-    * @Route("/speakers/{id}/talks", methods={"GET"})
+    * List talks by event route.
+    * @Route("/events/{id}/talks", methods={"GET"})
     * @OA\Parameter(
     *    name="id",
     *    in="path",
-    *    description="The field used to identify a speaker",
+    *    description="The field used to identify a event",
     * )
     *
     * @OA\Response(
@@ -43,12 +43,12 @@ class ListTalksBySpeakerController
     public function handle(int $id, Request $request): Response
     {
         try {
-            $response = $this->listTalksBySpeakerService->execute($id);
+            $response = $this->listTalksByEventService->execute($id);
 
             return HttpResponses::ok($response);
         } catch (\TypeError $error) {
             return HttpResponses::badRequest($error);
-        } catch (SpeakerNotFoundError $error) {
+        } catch (EventNotFoundError $error) {
             return HttpResponses::notFound($error);
         } catch (\Exception $error) {
             return HttpResponses::serverError($error);
