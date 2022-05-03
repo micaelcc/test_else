@@ -6,6 +6,7 @@ use App\Repository\SpeakerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: SpeakerRepository::class)]
 #[ORM\Table(name: '`speakers`')]
@@ -29,6 +30,9 @@ class Speaker
     private $email;
 
     #[ORM\OneToMany(mappedBy: 'speaker', targetEntity: Talk::class)]
+    /**
+     * @Ignore()
+     */
     private $talks;
 
     public function __construct()
