@@ -80,8 +80,30 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "nelmio/api-doc-bundle": {
+        "version": "4.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
+        },
+        "files": [
+            "config/packages/nelmio_api_doc.yaml",
+            "config/routes/nelmio_api_doc.yaml"
+        ]
+    },
     "nikic/php-parser": {
         "version": "v4.13.2"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "2.2.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "5.3.0"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.6.1"
     },
     "psr/cache": {
         "version": "3.0.0"
@@ -121,6 +143,9 @@
         "files": [
             "phpcs.xml.dist"
         ]
+    },
+    "symfony/asset": {
+        "version": "v6.0.7"
     },
     "symfony/cache": {
         "version": "v6.0.8"
@@ -216,6 +241,9 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/options-resolver": {
+        "version": "v6.0.3"
+    },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.25.0"
     },
@@ -227,6 +255,9 @@
     },
     "symfony/polyfill-php81": {
         "version": "v1.25.0"
+    },
+    "symfony/property-info": {
+        "version": "v6.0.7"
     },
     "symfony/proxy-manager-bridge": {
         "version": "v6.0.6"
@@ -247,6 +278,9 @@
     "symfony/runtime": {
         "version": "v6.0.8"
     },
+    "symfony/serializer": {
+        "version": "v6.0.8"
+    },
     "symfony/service-contracts": {
         "version": "v3.0.1"
     },
@@ -256,6 +290,25 @@
     "symfony/string": {
         "version": "v6.0.8"
     },
+    "symfony/translation-contracts": {
+        "version": "v3.0.1"
+    },
+    "symfony/twig-bridge": {
+        "version": "v6.0.8"
+    },
+    "symfony/twig-bundle": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.4",
+            "ref": "bb2178c57eee79e6be0b297aa96fc0c0def81387"
+        },
+        "files": [
+            "config/packages/twig.yaml",
+            "templates/base.html.twig"
+        ]
+    },
     "symfony/var-dumper": {
         "version": "v6.0.8"
     },
@@ -264,5 +317,17 @@
     },
     "symfony/yaml": {
         "version": "v6.0.3"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.3.8"
+    },
+    "twig/twig": {
+        "version": "v3.3.10"
+    },
+    "webmozart/assert": {
+        "version": "1.10.0"
+    },
+    "zircote/swagger-php": {
+        "version": "4.3.0"
     }
 }

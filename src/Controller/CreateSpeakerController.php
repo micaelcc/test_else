@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Dtos\CreateSpeakerDTO;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Entity\Speaker;
 
 class CreateSpeakerController
 {
@@ -19,7 +22,21 @@ class CreateSpeakerController
     }
 
   /**
+   * Create speaker route.
    * @Route("/speakers", methods={"POST"})
+   * @OA\RequestBody(
+   *    @Model(type=CreateSpeakerDTO::class)
+   * )
+   *
+   * @OA\Response(
+   *     response=200,
+   *     description="Returns an speaker on success",
+   *     @Model(type=Speaker::class)
+   * )
+   * @OA\Response(
+   *     response=400,
+   *     description="Return 400 if a invalid data is provided",
+   * )
    */
     public function handle(Request $request): Response
     {

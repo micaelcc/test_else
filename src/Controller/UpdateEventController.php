@@ -8,6 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Dtos\UpdateEventDTO;
 use App\Services\UpdateEventService;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Entity\Event;
 
 class UpdateEventController
 {
@@ -18,9 +21,23 @@ class UpdateEventController
         $this->updateEventService = $updateEventService;
     }
 
-  /**
-   * @Route("/events/{id}", methods={"PATCH"})
-   */
+    /**
+    * Update event route.
+    * @Route("/events/{id}", methods={"PATCH"})
+    * @OA\RequestBody(
+    *    @Model(type=UpdateEventDTO::class)
+    * )
+    *
+    * @OA\Response(
+    *     response=200,
+    *     description="Returns updated Event on success",
+    *     @Model(type=Event::class)
+    * )
+    * @OA\Response(
+    *     response=400,
+    *     description="Return 400 if a invalid data is provided",
+    * )
+    */
     public function handle(int $id, Request $request): Response
     {
         try {

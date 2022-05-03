@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\ShowTalkService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Entity\Talk;
 
 class ShowTalkController
 {
@@ -17,9 +20,25 @@ class ShowTalkController
         $this->showTalkService = $showTalkService;
     }
 
-  /**
-   * @Route("/talks/{id}", methods={"GET"})
-   */
+    /**
+    * Show talk route.
+    * @Route("/talks/{id}", methods={"GET"})
+    * @OA\Parameter(
+    *    name="id",
+    *    in="path",
+    *    description="The field used to identify talk",
+    * )
+    *
+    * @OA\Response(
+    *     response=200,
+    *     description="Returns a Talk on success",
+    *     @Model(type=Talk::class)
+    * )
+    * @OA\Response(
+    *     response=404,
+    *     description="Return 404 if a inexistent talk is provided",
+    * )
+    */
     public function handle(int $id, Request $request): Response
     {
         try {

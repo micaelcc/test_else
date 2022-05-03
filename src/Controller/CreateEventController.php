@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Dtos\CreateEventDTO;
+use App\Entity\Event;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 class CreateEventController
 {
@@ -19,7 +22,25 @@ class CreateEventController
     }
 
   /**
+   * Create event route
    * @Route("/events", methods={"POST"})
+   * @OA\RequestBody(
+   *    @Model(type=CreateEventDTO::class)
+   * )
+   *
+   * @OA\Response(
+   *     response=200,
+   *     description="Returns an event on success",
+   *     @Model(type=Event::class)
+   * )
+   * @OA\Response(
+   *     response=400,
+   *     description="Return 400 if a invalid data is provided",
+   * )
+   * @OA\Response(
+   *     response=409,
+   *     description="Return 409 if already used title is provided",
+   * )
    */
     public function handle(Request $request): Response
     {
