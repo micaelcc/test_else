@@ -11,6 +11,9 @@ use App\Dtos\CreateEventDTO;
 use App\Entity\Event;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Helper\HttpResponses;
+use App\Helper\StartDateAndEndDateError;
+use App\Helper\EventAlreadyExists;
 
 class CreateEventController
 {
@@ -51,17 +54,13 @@ class CreateEventController
 
             $response = $this->createEventService->execute($converted);
 
-            return (new JsonResponse())
-              ->setData($response->toJson())
-              ->setStatusCode(201);
+            return HttpResponses::created($response->toJson());
+        } catch (\TypeError | StartDateAndEndDateError $error) {
+            return HttpResponses::badRequest($error);
+        } catch (EventAlreadyExists $error) {
+            return HttpResponses::conflict($error);
         } catch (\Exception $error) {
-            return (new JsonResponse())
-              ->setStatusCode($error->getCode())
-              ->setData($error->__toString());
-        } catch (\TypeError $error) {
-            return (new JsonResponse())
-              ->setStatusCode(400)
-              ->setData($error->__toString());
+            return HttpResponses::serverError($error);
         }
     }
 }

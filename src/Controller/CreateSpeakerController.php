@@ -11,6 +11,8 @@ use App\Dtos\CreateSpeakerDTO;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Entity\Speaker;
+use App\Helper\HttpResponses;
+use App\Helper\SpeakerAlreadyExistsError;
 
 class CreateSpeakerController
 {
@@ -47,17 +49,13 @@ class CreateSpeakerController
 
             $response = $this->createSpeakerService->execute($converted);
 
-            return (new JsonResponse())
-              ->setData($response->toJson())
-              ->setStatusCode(201);
-        } catch (\Exception $error) {
-            return (new JsonResponse())
-              ->setStatusCode($error->getCode())
-              ->setData($error->__toString());
+            return HttpResponses::created($response->toJson());
         } catch (\TypeError $error) {
-            return (new JsonResponse())
-              ->setStatusCode(400)
-              ->setData($error->__toString());
+            return HttpResponses::badRequest($error);
+        } catch (SpeakerAlreadyExistsError $error) {
+            return HttpResponses::conflict($error);
+        } catch (\Exception $error) {
+            return HttpResponses::serverError($error);
         }
     }
 }

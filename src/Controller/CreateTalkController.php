@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Entity\Talk;
+use App\Helper\HttpResponses;
+use App\Helper\EventNotFoundError;
+use App\Helper\SpeakerNotFoundError;
 
 class CreateTalkController
 {
@@ -51,17 +54,13 @@ class CreateTalkController
 
             $response = $this->createTalkService->execute($converted);
 
-            return (new JsonResponse())
-            ->setStatusCode(201)
-            ->setData($response->toJson());
-        } catch (\Exception $error) {
-            return (new JsonResponse())
-            ->setStatusCode($error->getCode())
-            ->setData($error->__toString());
+            return HttpResponses::created($response->toJson());
         } catch (\TypeError $error) {
-            return (new JsonResponse())
-            ->setStatusCode(400)
-            ->setData($error->__toString());
+            return HttpResponses::badRequest($error);
+        } catch (EventNotFoundError | SpeakerNotFoundError $error) {
+            return HttpResponses::notFound($error);
+        } catch (\Exception $error) {
+            return HttpResponses::serverError($error);
         }
     }
 }
