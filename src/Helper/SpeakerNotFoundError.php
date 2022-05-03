@@ -10,5 +10,4 @@ class SpeakerNotFoundError extends BaseErrorHandler
     {
         parent::__construct('speaker not found', 404);
     }
-
 }

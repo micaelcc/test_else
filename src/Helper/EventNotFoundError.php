@@ -10,5 +10,4 @@ class EventNotFoundError extends BaseErrorHandler
     {
         parent::__construct('event not found', 404);
     }
-
 }
