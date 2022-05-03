@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Service\Speaker;
 
 use App\Contract\SpeakerRepository;
-use App\Contract\TalkRepository;
+use App\Entity\Speaker;
 use App\Helper\SpeakerNotFoundError;
+use App\Contract\TalkRepository;
 
-class ListTalksBySpeakerService
+class ShowSpeakerService
 {
     private SpeakerRepository $speakerRepository;
     private TalkRepository $talkRepository;
@@ -17,22 +18,13 @@ class ListTalksBySpeakerService
         $this->talkRepository = $talkRepository;
     }
 
-    public function execute(int $id): array
+    public function execute(int $id): Speaker
     {
         $speaker = $this->speakerRepository->findById($id);
 
         if ($speaker === null) {
             throw new SpeakerNotFoundError();
         }
-
-        $speakerTalks = $this->talkRepository->findBySpeaker($id);
-
-        $talks = [];
-
-        foreach ($speakerTalks as $talk) {
-            $talks[] = $talk->toJson();
-        }
-
-        return $talks;
+        return $speaker;
     }
 }

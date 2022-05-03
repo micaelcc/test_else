@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Service\Event;
 
 use App\Contract\EventRepository;
 use App\Dtos\CreateEventDTO;

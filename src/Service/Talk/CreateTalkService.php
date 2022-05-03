@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Service\Talk;
 
 use App\Entity\Talk;
 use App\Dtos\CreateTalkDTO;

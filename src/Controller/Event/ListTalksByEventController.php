@@ -1,50 +1,51 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Services\DeleteEventService;
+use App\Service\Event\ListTalksByEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Entity\Talk;
 use App\Helper\HttpResponses;
 use App\Helper\EventNotFoundError;
 
-class DeleteEventController
+class ListTalksByEventController
 {
-    private DeleteEventService $deleteEventService;
+    private ListTalksByEventService $listTalksByEventService;
 
-    public function __construct(DeleteEventService $deleteEventService)
+    public function __construct(ListTalksByEventService $listTalksByEventService)
     {
-        $this->deleteEventService = $deleteEventService;
+        $this->listTalksByEventService = $listTalksByEventService;
     }
 
     /**
-    * Delete event route.
-    * @Route("/events/{id}", methods={"DELETE"})
+    * List talks by event route.
+    * @Route("/events/{id}/talks", methods={"GET"})
     * @OA\Parameter(
     *    name="id",
     *    in="path",
-    *    description="The field used to identify event",
+    *    description="The field used to identify a event",
     * )
     *
     * @OA\Response(
-    *     response=204,
-    *     description="Returns 204 if delete was successful",
-    * )
-    * @OA\Response(
-    *     response=404,
-    *     description="Return 404 if a inexistent event is provided",
+    *     response=200,
+    *     description="Returns array of talks",
+    *      @OA\JsonContent(
+    *        type="array",
+    *        @OA\Items(ref=@Model(type=Talk::class))
+    *     )
     * )
     */
     public function handle(int $id, Request $request): Response
     {
         try {
-            $this->deleteEventService->execute($id);
+            $response = $this->listTalksByEventService->execute($id);
 
-            return HttpResponses::deleted();
+            return HttpResponses::ok($response);
         } catch (\TypeError $error) {
             return HttpResponses::badRequest($error);
         } catch (EventNotFoundError $error) {

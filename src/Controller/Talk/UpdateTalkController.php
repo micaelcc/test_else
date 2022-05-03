@@ -1,40 +1,40 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Talk;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Dtos\UpdateEventDTO;
-use App\Services\UpdateEventService;
+use App\Dtos\UpdateTalkDTO;
+use App\Service\Talk\UpdateTalkService;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use App\Entity\Event;
+use App\Entity\Talk;
 use App\Helper\HttpResponses;
-use App\Helper\EventNotFoundError;
-use App\Helper\EventTitleAlreadyInUseError;
+use App\Helper\TalkNotFoundError;
+use App\Helper\SpeakerNotFoundError;
 
-class UpdateEventController
+class UpdateTalkController
 {
-    private UpdateEventService $updateEventService;
+    private UpdateTalkService $updateTalkService;
 
-    public function __construct(UpdateEventService $updateEventService)
+    public function __construct(UpdateTalkService $updateTalkService)
     {
-        $this->updateEventService = $updateEventService;
+        $this->updateTalkService = $updateTalkService;
     }
 
     /**
-    * Update event route.
-    * @Route("/events/{id}", methods={"PATCH"})
+    * Update talk route.
+    * @Route("/talks/{id}", methods={"PATCH"})
     * @OA\RequestBody(
-    *    @Model(type=UpdateEventDTO::class)
+    *    @Model(type=UpdateTalkDTO::class)
     * )
     *
     * @OA\Response(
     *     response=200,
-    *     description="Returns updated Event on success",
-    *     @Model(type=Event::class)
+    *     description="Returns updated Talk on success",
+    *     @Model(type=Talk::class)
     * )
     * @OA\Response(
     *     response=400,
@@ -46,16 +46,14 @@ class UpdateEventController
         try {
             $jsonData = json_decode($request->getContent(), true);
 
-            $converted = new UpdateEventDTO($jsonData);
+            $converted = new UpdateTalkDTO($jsonData);
 
-            $response = $this->updateEventService->execute($converted, $id);
+            $response = $this->updateTalkService->execute($converted, $id);
 
             return HttpResponses::updated($response->toJson());
         } catch (\TypeError $error) {
             return HttpResponses::badRequest($error);
-        } catch (EventTitleAlreadyInUseError $error) {
-            return HttpResponses::conflict($error);
-        } catch (EventNotFoundError $error) {
+        } catch (TalkNotFoundError | SpeakerNotFoundError $error) {
             return HttpResponses::notFound($error);
         } catch (\Exception $error) {
             return HttpResponses::serverError($error);

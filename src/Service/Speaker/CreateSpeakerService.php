@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Service\Speaker;
 
 use App\Contract\SpeakerRepository;
 use App\Dtos\CreateSpeakerDTO;
