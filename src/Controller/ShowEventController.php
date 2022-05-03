@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\ShowEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\Event;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 class ShowEventController
 {
@@ -17,9 +20,25 @@ class ShowEventController
         $this->showEventService = $showEventService;
     }
 
-  /**
-   * @Route("/events/{id}", methods={"GET"})
-   */
+    /**
+    * Show event route.
+    * @Route("/events/{id}", methods={"GET"})
+    * @OA\Parameter(
+    *    name="id",
+    *    in="path",
+    *    description="The field used to identify event",
+    * )
+    *
+    * @OA\Response(
+    *     response=200,
+    *     description="Returns a Event on success",
+    *     @Model(type=Event::class)
+    * )
+    * @OA\Response(
+    *     response=404,
+    *     description="Return 404 if a inexistent event is provided",
+    * )
+    */
     public function handle(int $id, Request $request): Response
     {
         try {
