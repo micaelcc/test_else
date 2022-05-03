@@ -9,6 +9,8 @@ use App\Services\DeleteTalkService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Helper\HttpResponses;
+use App\Helper\TalkNotFoundError;
 
 class DeleteTalkController
 {
@@ -42,13 +44,13 @@ class DeleteTalkController
         try {
             $this->deleteTalkService->execute($id);
 
-            return (new JsonResponse())
-            ->setStatusCode(204);
+            return HttpResponses::deleted();
+        } catch (\TypeError $error) {
+            return HttpResponses::badRequest($error);
+        } catch (TalkNotFoundError $error) {
+            return HttpResponses::notFound($error);
         } catch (\Exception $error) {
-            var_dump($error->__toString());
-            return (new JsonResponse())
-            ->setStatusCode($error->getCode())
-            ->setData($error->__toString());
+            return HttpResponses::serverError($error);
         }
     }
 }

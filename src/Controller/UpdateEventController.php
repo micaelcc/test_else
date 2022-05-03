@@ -11,6 +11,9 @@ use App\Services\UpdateEventService;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Entity\Event;
+use App\Helper\HttpResponses;
+use App\Helper\EventNotFoundError;
+use App\Helper\EventTitleAlreadyInUseError;
 
 class UpdateEventController
 {
@@ -47,13 +50,15 @@ class UpdateEventController
 
             $response = $this->updateEventService->execute($converted, $id);
 
-            return (new JsonResponse())
-            ->setStatusCode(200)
-            ->setData($response->toJson());
+            return HttpResponses::updated($response->toJson());
+        } catch (\TypeError $error) {
+            return HttpResponses::badRequest($error);
+        } catch (EventTitleAlreadyInUseError $error) {
+            return HttpResponses::conflict($error);
+        } catch (EventNotFoundError $error) {
+            return HttpResponses::notFound($error);
         } catch (\Exception $error) {
-            return (new JsonResponse())
-            ->setStatusCode($error->getCode())
-            ->setData($error->__toString());
+            return HttpResponses::serverError($error);
         }
     }
 }

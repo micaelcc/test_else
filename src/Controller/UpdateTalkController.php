@@ -11,6 +11,9 @@ use App\Services\UpdateTalkService;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Entity\Talk;
+use App\Helper\HttpResponses;
+use App\Helper\TalkNotFoundError;
+use App\Helper\SpeakerNotFoundError;
 
 class UpdateTalkController
 {
@@ -47,13 +50,13 @@ class UpdateTalkController
 
             $response = $this->updateTalkService->execute($converted, $id);
 
-            return (new JsonResponse())
-            ->setStatusCode(200)
-            ->setData($response->toJson());
+            return HttpResponses::updated($response->toJson());
+        } catch (\TypeError $error) {
+            return HttpResponses::badRequest($error);
+        } catch (TalkNotFoundError | SpeakerNotFoundError $error) {
+            return HttpResponses::notFound($error);
         } catch (\Exception $error) {
-            return (new JsonResponse())
-            ->setStatusCode($error->getCode())
-            ->setData($error->__toString());
+            return HttpResponses::serverError($error);
         }
     }
 }

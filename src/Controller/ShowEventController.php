@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Event;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Helper\HttpResponses;
+use App\Helper\EventNotFoundError;
 
 class ShowEventController
 {
@@ -44,13 +46,13 @@ class ShowEventController
         try {
             $response = $this->showEventService->execute($id);
 
-            return (new JsonResponse())
-            ->setStatusCode(200)
-            ->setData($response->toJson());
+            return HttpResponses::ok($response->toJson());
+        } catch (\TypeError $error) {
+            return HttpResponses::badRequest($error);
+        } catch (EventNotFoundError $error) {
+            return HttpResponses::notFound($error);
         } catch (\Exception $error) {
-            return (new JsonResponse())
-            ->setStatusCode($error->getCode())
-            ->setData($error->__toString());
+            return HttpResponses::serverError($error);
         }
     }
 }

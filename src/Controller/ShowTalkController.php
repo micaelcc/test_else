@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Entity\Talk;
+use App\Helper\HttpResponses;
+use App\Helper\TalkNotFoundError;
 
 class ShowTalkController
 {
@@ -47,10 +49,12 @@ class ShowTalkController
             return (new JsonResponse())
             ->setStatusCode(200)
             ->setData($response->toJson());
+        } catch (\TypeError $error) {
+            return HttpResponses::badRequest($error);
+        } catch (TalkNotFoundError $error) {
+            return HttpResponses::notFound($error);
         } catch (\Exception $error) {
-            return (new JsonResponse())
-            ->setStatusCode($error->getCode())
-            ->setData($error->__toString());
+            return HttpResponses::serverError($error);
         }
     }
 }
