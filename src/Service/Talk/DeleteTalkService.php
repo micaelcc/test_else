@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Service\Talk;
 
 use App\Contract\TalkRepository;
 use App\Helper\TalkNotFoundError;
