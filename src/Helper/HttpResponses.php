@@ -10,7 +10,7 @@ class HttpResponses
     {
         return (new JsonResponse())
         ->setStatusCode(400)
-        ->setData($error->__toString());
+        ->setData($error->toJson());
     }
 
     public static function created(array $data): JsonResponse
@@ -31,7 +31,7 @@ class HttpResponses
     {
         return (new JsonResponse())
         ->setStatusCode(404)
-        ->setData($error->__toString());
+        ->setData($error->toJson());
     }
 
     public static function ok(array $data = []): JsonResponse
@@ -51,7 +51,7 @@ class HttpResponses
     {
         return (new JsonResponse())
         ->setStatusCode(409)
-        ->setData($error->__toString());
+        ->setData($error->toJson());
     }
 
     public static function updated(array $data): JsonResponse
