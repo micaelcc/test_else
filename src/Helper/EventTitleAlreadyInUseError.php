@@ -2,15 +2,12 @@
 
 namespace App\Helper;
 
-class EventTitleAlreadyInUseError extends \Exception
+use App\Helper\BaseErrorHandler;
+
+class EventTitleAlreadyInUseError extends BaseErrorHandler
 {
     public function __construct()
     {
-        parent::__construct('event with that title already exists', 409, null);
-    }
-
-    public function __toString()
-    {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
-    }
+        parent::__construct('event with that title already exists', 409);
+    }   
 }

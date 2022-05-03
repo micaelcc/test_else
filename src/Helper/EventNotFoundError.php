@@ -2,15 +2,13 @@
 
 namespace App\Helper;
 
-class EventNotFoundError extends \Exception
+use App\Helper\BaseErrorHandler;
+
+class EventNotFoundError extends BaseErrorHandler
 {
     public function __construct()
     {
-        parent::__construct('event not found', 404, null);
+        parent::__construct('event not found', 404);
     }
 
-    public function __toString()
-    {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
-    }
 }

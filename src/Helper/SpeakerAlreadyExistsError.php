@@ -2,15 +2,12 @@
 
 namespace App\Helper;
 
-class SpeakerAlreadyExistsError extends \Exception
+use App\Helper\BaseErrorHandler;
+
+class SpeakerAlreadyExistsError extends BaseErrorHandler
 {
     public function __construct()
     {
-        parent::__construct('speaker already exists', 409, null);
-    }
-
-    public function __toString()
-    {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+        parent::__construct('speaker already exists', 409);
     }
 }
