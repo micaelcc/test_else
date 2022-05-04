@@ -25,3 +25,6 @@
 
 ### Documentação da Api no navegador
     http://localhost:8000/api/doc
+
+### Rodando testes
+    composer tests
