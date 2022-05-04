@@ -23,4 +23,4 @@ services:
     env_file:
       - .env
     environment:
-      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
