@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Repository;
 
 use PHPUnit\Framework\TestCase;
 use App\Service\Event\CreateEventService;
-use App\Tests\FakeEventRepository;
+use App\Tests\Repository\FakeEventRepository;
 use App\Dtos\CreateEventDTO;
 use App\Entity\Event;
 
