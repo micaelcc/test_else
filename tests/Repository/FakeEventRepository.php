@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Repository;
 
 use App\Contract\EventRepository;
 use App\Entity\Event;
 
 class FakeEventRepository implements EventRepository
 {
-  private array $events;
+  public array $events;
   
   public function __construct()
   {
@@ -18,15 +18,28 @@ class FakeEventRepository implements EventRepository
   {
     $event->setId(count($this->events) + 1);
 
-    $events[] = $event;
+    $this->events[] = $event;
   }
 
   public function findByTitle(string $title): Event | null
   {
+    foreach($this->events as $event) {
+      if ($event->getTitle() === $title) {
+        return $event;
+      }
+    }
+
     return null;
   }
+
   public function findById(int $id): Event | null
   {
+    foreach($this->events as $event) {
+      if ($event->getId() === $id) {
+        return $event;
+      }
+    }
+
     return null;
   }
 
