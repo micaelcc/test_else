@@ -49,7 +49,12 @@ class Event
         $this->updatedTimestamps();
         $this->talks = new ArrayCollection();
     }
-
+    
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
