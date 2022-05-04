@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HttpResponses
 {
-    public static function badRequest(\TypeError $error): JsonResponse
+    public static function badRequest(\TypeError | \Exception $error): JsonResponse
     {
         return (new JsonResponse())
         ->setStatusCode(400)
