@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Helper\HttpResponses;
 use App\Helper\StartDateAndEndDateError;
-use App\Helper\EventAlreadyExists;
+use App\Helper\EventAlreadyExistsError;
 
 class CreateEventController
 {
@@ -57,7 +57,7 @@ class CreateEventController
             return HttpResponses::created($response->toJson());
         } catch (\TypeError | StartDateAndEndDateError $error) {
             return HttpResponses::badRequest($error);
-        } catch (EventAlreadyExists $error) {
+        } catch (EventAlreadyExistsError $error) {
             return HttpResponses::conflict($error);
         } catch (\Exception $error) {
             return HttpResponses::serverError($error);
