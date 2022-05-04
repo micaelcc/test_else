@@ -68,7 +68,8 @@
             "@auto-scripts"
         ],
         "phpcs": "phpcs --standard=PSR12 src/",
-        "phpcbf": "phpcbf --standard=PSR12 src/"
+        "phpcbf": "phpcbf --standard=PSR12 src/",
+        "tests": "bin/phpunit"
     },
     "conflict": {
         "symfony/symfony": "*"
