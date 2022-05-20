@@ -13,16 +13,14 @@ class CreateEventServiceTest extends TestCase
   private $service;
   private $repository;
 
-  public function makeSut() {
+  protected function setUp(): void
+  {
     $this->repository = new FakeEventRepository();
     $this->service = new CreateEventService($this->repository);
   }
-  /**
-   * @test
-   */
-  public function mustBeAbleToCreateEvent()
+
+  public function testMustBeAbleToCreateEvent()
   {
-    $this->makeSut();
     
     $event = new CreateEventDTO([
       'title' => 'title',
